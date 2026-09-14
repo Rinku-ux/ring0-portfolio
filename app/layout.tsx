@@ -18,7 +18,7 @@ const mono = Share_Tech_Mono({
 
 export const metadata: Metadata = {
   title: "Portfolio",
-  description: "ゲームとツール。",
+  description: "Ring0",
 };
 
 export default function RootLayout({

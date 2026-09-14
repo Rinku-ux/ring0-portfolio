@@ -15,7 +15,7 @@ export default function HomePage() {
       <section className="hero">
         <div>
           <h1 className="glitch" data-text="Portfolio">Portfolio</h1>
-          <p className="tagline typing">ゲームとツール。</p>
+          <p className="tagline typing">Ring0</p>
         </div>
         <Link className="btn mono blink" href={featured ? `/work/${featured.slug}` : "/work"}>
           PRESS START
@@ -41,7 +41,7 @@ export default function HomePage() {
         </a>
       ) : null}
 
-      <p className="section-label mono">Projects [ ゲーム & ツール ]</p>
+      <p className="section-label mono">Projects</p>
       <div className="inventory">
         {filled.map((project) => (
           <ProjectCard key={project.slug} project={project} />

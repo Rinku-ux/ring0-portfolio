@@ -15,7 +15,7 @@ export function Nav() {
     <header className="top">
       <Link className="brand mono" href="/" title="トップページへ戻る">
         <span className="brand-title">Portfolio</span>
-        <span className="brand-hint">ゲームとツール</span>
+        <span className="brand-hint">Ring0</span>
       </Link>
       <nav className="primary mono" aria-label="primary">
         {LINKS.map((link) => {
