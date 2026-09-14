@@ -1,0 +1,32 @@
+---
+title: GAS-Minecraft
+slug: gas-minecraft
+kind: game
+year: 2026
+summary: GAS(Google Apps Script)環境で動作するマインクラフト風ゲーム。
+stack:
+  - Google Apps Script
+liveUrl: https://script.google.com/macros/s/AKfycbyCdT0PfSHnDwTKPeV3qrBqznyTYAJ080CGjr3xvQyRds-0sgRorce8jWRvdPtk0-saIg/exec
+cover: /covers/gas-minecraft.jpg
+playable: true
+featured: false
+status: live
+---
+Google Apps Script (GAS) 上で構築された、ブラウザで遊べるマインクラフト風のボクセルゲームです。
+
+通常、ゲーム開発には向かないとされるGAS環境の限界に挑戦し、どこまで「遊べる」ものが作れるかを実験したプロジェクトです。
+
+## 🎮 開発のきっかけ
+
+「サーバーレスかつ無料でウェブアプリを公開できるGASを使って、アクションゲームは作れるのか？」という純粋な技術的興味からスタートしました。
+
+## 🛠 技術的な工夫
+
+* **描画パフォーマンスの最適化**: GASからのHTML配信は制約が多いため、フロントエンド（HTML/JS）側での描画ループをいかに軽くするかが課題でした。不要なブロックの描画をカリング（間引き）する処理を実装しています。
+* **データ保存**: ユーザーが配置したブロックの座標データやワールドの状態を、Googleスプレッドシートを簡易データベース代わりに用いて非同期で保存・読み込みしています。
+
+## 🕹 遊び方
+
+1. 上記の「Play」ボタンからアクセスします（※初回のみGoogleの認証画面が出る場合があります）。
+2. マウスとキーボード（WASD）でワールド内を移動します。
+3. クリックでブロックを配置・破壊し、自分だけの建築を楽しむことができます。
