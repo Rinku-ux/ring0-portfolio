@@ -1,10 +1,11 @@
 {
-  "name": "portfolio",
+  "name": "ring0-portfolio",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "covers": "node scripts/capture-covers.mjs"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

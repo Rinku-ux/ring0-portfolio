@@ -1,0 +1,24 @@
+/* /admin の管理画面。表に出ないので装飾より一覧性を優先する。 */
+.tabs { display: flex; flex-wrap: wrap; gap: var(--sp-2); padding-bottom: var(--sp-4); border-bottom: 1px solid var(--line); }
+.tab { min-height: 38px; padding: 0 var(--sp-4); border: 1px solid var(--line); border-radius: var(--radius-pill); background: transparent; color: var(--text-dim); font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.tab:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+.tab[aria-selected="true"] { border-color: var(--text); background: var(--text); color: #0a0a0c; }
+
+.admin-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--sp-4); align-items: end; }
+.admin-actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+.admin-check { display: inline-flex; align-items: center; gap: var(--sp-2); font-size: var(--text-small); color: var(--text-dim); }
+.admin-check input { width: 18px; height: 18px; accent-color: var(--accent); }
+.admin-code { font-family: var(--font-mono); font-size: 13px; line-height: 1.7; }
+.field > span { font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); }
+.input[type="file"] { padding: 9px var(--sp-3); }
+
+.admin-item { display: grid; gap: var(--sp-3); padding: var(--sp-4); border: 1px solid var(--line); border-radius: var(--radius); background: rgba(255, 255, 255, 0.02); }
+.admin-thumb { flex: none; width: 88px; height: 52px; overflow: hidden; border-radius: 8px; background: var(--surface-2); }
+.admin-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--sp-4); }
+.media-card { display: grid; gap: var(--sp-3); margin: 0; padding: var(--sp-3); border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.media-preview { display: grid; place-items: center; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 10px; background: #000; }
+.media-preview img, .media-preview video { width: 100%; height: 100%; object-fit: cover; }
+.media-card figcaption { display: grid; gap: 2px; min-width: 0; }
+.media-name { overflow: hidden; font-size: var(--text-small); text-overflow: ellipsis; white-space: nowrap; }

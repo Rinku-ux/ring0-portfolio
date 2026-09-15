@@ -1,55 +1,87 @@
-import { notFound } from "next/navigation";
-import { MDXRemote } from "next-mdx-remote/rsc";
-import { getProject, getProjects } from "@/lib/projects";
+import type { Metadata } from "next"
+import Link from "next/link"
+import { notFound } from "next/navigation"
+import { MDXRemote } from "next-mdx-remote/rsc"
+import { MediaFrame } from "@/components/MediaFrame"
+import { getNeighbors, getProject, getProjects } from "@/lib/projects"
+import { KIND_LABELS, STATUS_LABELS } from "@/lib/types"
+
+type Params = { params: Promise<{ slug: string }> }
 
 export function generateStaticParams() {
-  return getProjects().map((project) => ({ slug: project.slug }));
+	return getProjects().map((project) => ({ slug: project.slug }))
 }
 
-export default async function ProjectPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const project = getProject(slug);
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+	const { slug } = await params
+	const project = getProject(slug)
 
-  if (!project) {
-    notFound();
-  }
+	if (!project) {
+		return { title: "見つかりません" }
+	}
 
-  return (
-    <>
-      <div className="detail">
-        <img className="cover hud" src={project.cover} alt={`${project.title} cover`} />
-        <aside className="stats hud">
-          <p className="kind mono">{project.kind}</p>
-          <h1 style={{ fontSize: 32 }}>{project.title}</h1>
-          <dl>
-            <dt className="mono">Year</dt>
-            <dd>{project.year}</dd>
-            <dt className="mono">Stack</dt>
-            <dd>{project.stack.join(", ")}</dd>
-            <dt className="mono">Status</dt>
-            <dd>{project.status}</dd>
-          </dl>
-          <div className="actions">
-            {project.playable && project.liveUrl ? (
-              <a className="btn mono" href={project.liveUrl} target="_blank" rel="noreferrer">
-                Play
-              </a>
-            ) : null}
-            {project.repoUrl ? (
-              <a className="btn ghost mono" href={project.repoUrl} target="_blank" rel="noreferrer">
-                Code
-              </a>
-            ) : null}
-          </div>
-        </aside>
-      </div>
-      <article className="writeup">
-        <MDXRemote source={project.body} />
-      </article>
-    </>
-  );
+	return {
+		title: project.title,
+		description: project.summary,
+		alternates: { canonical: `/work/${project.slug}` },
+		openGraph: { title: project.title, description: project.summary, images: [{ url: project.cover }] },
+	}
+}
+
+export default async function ProjectPage({ params }: Params) {
+	const { slug } = await params
+	const project = getProject(slug)
+
+	if (!project) {
+		notFound()
+	}
+
+	const { prev, next } = getNeighbors(project.slug)
+
+	return (
+		<>
+			<section className="page-head">
+				<p className="mono">
+					{KIND_LABELS[project.kind]} / {project.year}
+				</p>
+				<h1>{project.title}</h1>
+				<p>{project.summary}</p>
+			</section>
+			<div className="grid-split">
+				<div className="stack">
+					<MediaFrame media={project.media} title={project.title} caption={project.mediaCaption} priority />
+					<div className="prose">
+						<MDXRemote source={project.body} />
+					</div>
+				</div>
+				<aside className="panel">
+					<p className="mono">detail</p>
+					<div className="meta">
+						<span className={`status status-${project.status}`}>{STATUS_LABELS[project.status]}</span>
+					</div>
+					<div className="meta">
+						{project.stack.map((item) => (
+							<span className="tag" key={item}>
+								{item}
+							</span>
+						))}
+					</div>
+					{project.liveUrl ? (
+						<a className="btn btn-primary" href={project.liveUrl} rel="noreferrer noopener" target="_blank">
+							{project.playable ? "遊んでみる" : "開く"}
+						</a>
+					) : null}
+					{project.repoUrl ? (
+						<a className="btn" href={project.repoUrl} rel="noreferrer noopener" target="_blank">
+							コードを見る
+						</a>
+					) : null}
+				</aside>
+			</div>
+			<nav className="pager" aria-label="作品の移動">
+				<span>{prev ? <Link href={`/work/${prev.slug}`}>← {prev.title}</Link> : null}</span>
+				<span>{next ? <Link href={`/work/${next.slug}`}>{next.title} →</Link> : null}</span>
+			</nav>
+		</>
+	)
 }

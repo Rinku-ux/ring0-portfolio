@@ -1,0 +1,111 @@
+/* ------------------------------------------------------------------
+ * トップページ専用。ヒーロー / リール / 一覧 / 演奏クリップ / CTA。
+ * 見せたいのは「作ったもの」と「弾いているところ」なので、
+ * 装飾は最小にして映像と大きな文字だけで組む。
+ * ------------------------------------------------------------------ */
+
+/* ヒーロー */
+.hero { display: grid; gap: var(--sp-6); padding-top: var(--sp-5); }
+.eyebrow { display: inline-flex; align-items: center; gap: var(--sp-2); width: fit-content; padding: 6px 14px 6px 10px; border: 1px solid var(--line); border-radius: var(--radius-pill); background: var(--surface); font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); }
+.eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--leaf); box-shadow: 0 0 0 3px rgba(94, 194, 106, 0.18); animation: pulse 2.4s var(--ease) infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+.hero-title { font-family: var(--font-display); font-size: var(--text-display); font-weight: 600; line-height: 0.92; letter-spacing: -0.05em; text-wrap: balance; }
+.hero-title .line { display: block; }
+.hero-title .outline { color: transparent; -webkit-text-stroke: 1.2px var(--text-faint); }
+.hero-title .swap { color: var(--accent); }
+.hero-bottom { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--sp-6); }
+.hero-lead { max-width: min(46ch, 100%); font-size: 17px; line-height: 1.75; color: var(--text-dim); }
+.hero-lead strong { color: var(--text); font-weight: 500; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+
+.hero-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-5); padding-top: var(--sp-5); border-top: 1px solid var(--line); }
+.fact { display: grid; gap: 6px; }
+.fact-num { font-family: var(--font-display); font-size: 30px; font-weight: 600; letter-spacing: -0.03em; }
+.fact-label { font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-faint); }
+
+/* リール: 画面幅いっぱいの映像。無音ループ + 音ありに切り替え。 */
+.reel { position: relative; overflow: hidden; border-radius: var(--radius-lg); background: #000; box-shadow: var(--shadow-2); }
+.reel-media { position: relative; aspect-ratio: 21 / 9; }
+.reel-media video, .reel-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.reel-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent 55%); pointer-events: none; }
+.reel-head { position: absolute; left: var(--sp-5); top: var(--sp-5); z-index: 2; display: flex; gap: var(--sp-2); }
+.reel-foot { position: absolute; left: var(--sp-5); right: var(--sp-5); bottom: var(--sp-5); z-index: 2; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--sp-4); }
+.reel-title { font-family: var(--font-display); font-size: clamp(20px, 3vw, 34px); font-weight: 600; letter-spacing: -0.03em; color: #fff; }
+.reel-note { font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); }
+.chip { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: var(--radius-pill); background: rgba(10, 10, 12, 0.5); color: #fff; font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.14em; text-transform: uppercase; backdrop-filter: blur(10px); cursor: pointer; transition: background var(--dur-fast) var(--ease); }
+.chip:hover { background: rgba(10, 10, 12, 0.78); }
+.chip-static { cursor: default; }
+
+/* マーキー: やっていることを一行で流す。 */
+.marquee { position: relative; display: flex; overflow: hidden; padding: var(--sp-4) 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.marquee-track { display: flex; flex: none; gap: var(--sp-6); padding-right: var(--sp-6); animation: slide 38s linear infinite; }
+.marquee-item { display: inline-flex; align-items: center; gap: var(--sp-6); font-family: var(--font-display); font-size: clamp(20px, 2.6vw, 34px); font-weight: 600; letter-spacing: -0.02em; white-space: nowrap; color: var(--text-faint); }
+.marquee-mark { display: inline-flex; color: var(--accent); }
+@keyframes slide { to { transform: translateX(-100%); } }
+
+/* 注目作 */
+.feature { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: var(--sp-6); align-items: start; }
+.feature-side { display: grid; gap: var(--sp-5); align-content: start; }
+.feature-name { font-family: var(--font-display); font-size: clamp(28px, 3.4vw, 44px); font-weight: 600; letter-spacing: -0.035em; line-height: 1.05; }
+.feature-text { color: var(--text-dim); }
+
+/* 作品一覧: 行で並べて、ホバーでサムネを出す。 */
+.worklist { display: grid; }
+.work-row { position: relative; display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: var(--sp-5); padding: var(--sp-5) var(--sp-2); border-bottom: 1px solid var(--line); transition: padding var(--dur-move) var(--ease); }
+.work-row:first-child { border-top: 1px solid var(--line); }
+.work-row::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--surface); opacity: 0; transition: opacity var(--dur-move) var(--ease); }
+.work-row:hover::before, .work-row:focus-within::before { opacity: 1; }
+.work-row:hover, .work-row:focus-within { padding-left: var(--sp-4); padding-right: var(--sp-4); }
+.work-index { font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.1em; color: var(--text-faint); }
+.work-main { display: grid; gap: 6px; min-width: 0; }
+.work-title { font-family: var(--font-display); font-size: clamp(22px, 2.4vw, 32px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
+.work-row:hover .work-title { color: var(--accent); }
+.work-summary { font-size: var(--text-small); color: var(--text-faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.work-end { display: flex; align-items: center; gap: var(--sp-4); }
+.work-thumb { width: 108px; height: 64px; overflow: hidden; border-radius: 10px; background: var(--surface-2); opacity: 0.45; transition: opacity var(--dur-move) var(--ease), transform var(--dur-move) var(--ease); }
+.work-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.work-row:hover .work-thumb { opacity: 1; transform: scale(1.04); }
+.work-arrow { font-family: var(--font-mono); font-size: 18px; color: var(--text-faint); transition: transform var(--dur-move) var(--ease), color var(--dur-fast) var(--ease); }
+.work-row:hover .work-arrow { transform: translate(4px, -4px); color: var(--accent); }
+
+/* 演奏クリップ: ピアノは「コンテンツ」として動画で見せる。 */
+.clip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--sp-5); }
+.clip { display: grid; gap: var(--sp-4); }
+.clip-frame { position: relative; overflow: hidden; aspect-ratio: 16 / 9; border-radius: var(--radius); background: #000; border: 1px solid var(--line); }
+.clip-frame video, .clip-frame iframe { display: block; width: 100%; height: 100%; border: 0; object-fit: cover; }
+.clip-cover { position: absolute; inset: 0; display: grid; place-items: center; padding: 0; border: 0; background: none; cursor: pointer; }
+.clip-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease), filter var(--dur-move) var(--ease); }
+.clip-cover:hover img { transform: scale(1.04); filter: brightness(0.75); }
+.clip-play { position: relative; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: rgba(255, 255, 255, 0.92); color: #0a0a0c; transition: transform var(--dur-move) var(--ease), background var(--dur-fast) var(--ease); }
+.clip-cover:hover .clip-play { transform: scale(1.1); background: var(--accent); color: #0a0a0c; }
+.clip-badge { position: absolute; right: var(--sp-3); bottom: var(--sp-3); z-index: 2; padding: 3px 9px; border-radius: 6px; background: rgba(10, 10, 12, 0.72); color: #fff; font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.08em; }
+.clip-info { display: grid; gap: 6px; }
+.clip-title { font-family: var(--font-display); font-size: var(--text-h3); font-weight: 600; letter-spacing: -0.02em; }
+.clip-meta { font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); }
+.clip-note { font-size: var(--text-small); color: var(--text-dim); }
+
+/* 見出しの下に置く一言 */
+.lede { max-width: min(54ch, 100%); color: var(--text-dim); }
+
+/* 最後の CTA。右下に大きなりんごを透かしで置く。 */
+.band { position: relative; overflow: hidden; display: grid; gap: var(--sp-6); padding: var(--sp-8) var(--sp-7); border: 1px solid var(--line); border-radius: var(--radius-lg); background: radial-gradient(90% 120% at 12% 0%, rgba(255, 59, 48, 0.16), transparent 60%), var(--surface); }
+.band-apple { position: absolute; right: -32px; bottom: -64px; z-index: 0; color: var(--accent); opacity: 0.12; pointer-events: none; }
+.band > *:not(.band-apple) { position: relative; z-index: 1; }
+.band-title { font-family: var(--font-display); font-size: clamp(30px, 5vw, 64px); font-weight: 600; letter-spacing: -0.045em; line-height: 1.02; }
+.band-actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+
+@media (max-width: 1000px) {
+	.feature { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+	.hero-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-4); }
+	.reel-media { aspect-ratio: 4 / 3; }
+	.reel-head, .reel-foot { left: var(--sp-4); right: var(--sp-4); }
+	.reel-head { top: var(--sp-4); }
+	.reel-foot { bottom: var(--sp-4); }
+	.work-row { grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-3); padding-block: var(--sp-4); }
+	.work-index, .work-thumb { display: none; }
+	.band { padding: var(--sp-7) var(--sp-5); }
+}

@@ -1,41 +1,41 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { SITE } from "@/lib/site"
+import { Logo } from "./Logo"
 
 const LINKS = [
-  { href: "/work", label: "Work" },
-  { href: "/about", label: "About" },
-] as const;
+	{ href: "/work", label: "Work" },
+	{ href: "/music", label: "Piano" },
+	{ href: "/notes", label: "Notes" },
+	{ href: "/about", label: "About" },
+]
 
 export function Nav() {
-  const pathname = usePathname();
+	const pathname = usePathname()
 
-  return (
-    <header className="top">
-      <Link className="brand mono" href="/" title="トップページへ戻る">
-        <span className="brand-title">Portfolio</span>
-        <span className="brand-hint">Ring0</span>
-      </Link>
-      <nav className="primary mono" aria-label="primary">
-        {LINKS.map((link) => {
-          const current =
-            link.href === "/work"
-              ? pathname.startsWith("/work")
-              : pathname === link.href;
+	return (
+		<header className="topbar">
+			<div className="topbar-inner">
+				<Logo />
+				<nav className="nav-links" aria-label="サイト内">
+					{LINKS.map((link) => {
+						const active = pathname === link.href || pathname.startsWith(`${link.href}/`)
 
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              aria-current={current ? "page" : undefined}
-            >
-              <span className="nav-prefix">{current ? "▶" : ">"}</span>
-              {link.label}
-            </Link>
-          );
-        })}
-      </nav>
-    </header>
-  );
+						return (
+							<Link className="nav-link" key={link.href} href={link.href} aria-current={active ? "page" : undefined}>
+								{link.label}
+							</Link>
+						)
+					})}
+				</nav>
+				<div className="nav-end">
+					<a className="btn" href={`mailto:${SITE.email}`}>
+						Contact
+					</a>
+				</div>
+			</div>
+		</header>
+	)
 }

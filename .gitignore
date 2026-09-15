@@ -34,3 +34,13 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# 確認用スクリーンショット
+/.preview/
+
+# 動画はリポジトリに入れない（GitHub は 100MB 超のファイルを拒否する）
+# 演奏やデモは YouTube（限定公開）に上げて ID を登録する運用。
+/public/media/*.mp4
+/public/media/*.mov
+/public/media/*.webm
+!/public/media/placeholder-demo.mp4

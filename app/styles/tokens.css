@@ -1,0 +1,101 @@
+/*
+ * 今風のクリエイターサイト用トークン。
+ * 方針: UI は無彩色のダーク。色は「作品のサムネと映像」から出す。
+ * ピアノは題材（コンテンツ）として扱い、意匠には持ち込まない。
+ */
+:root {
+	color-scheme: dark;
+
+	/* 面 */
+	--bg: #08080a;
+	--bg-soft: #0d0d10;
+	--surface: #121216;
+	--surface-2: #191920;
+	--surface-hi: #21212a;
+
+	/* 文字 */
+	--text: #f4f3f1;
+	--text-dim: #a2a2ac;
+	--text-faint: #6b6b76;
+
+	/* 線 */
+	--line: rgba(255, 255, 255, 0.08);
+	--line-strong: rgba(255, 255, 255, 0.16);
+
+	/* アクセントは一色だけ。ring0（りんご）なので林檎の赤。 */
+	--accent: #ff3b30;
+	--accent-hi: #ff6a5e;
+	--accent-soft: rgba(255, 59, 48, 0.14);
+	/* 葉っぱの緑。稼働中の点や公開中のラベルだけに使う。 */
+	--leaf: #5ec26a;
+	--live: var(--leaf);
+
+	/* 書体 */
+	--font-display: "Inter Tight", Inter, "Noto Sans JP", system-ui, sans-serif;
+	--font-sans: Inter, "Noto Sans JP", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
+	--font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+	/* 文字サイズ */
+	--text-display: clamp(46px, 10.5vw, 148px);
+	--text-h1: clamp(32px, 5.2vw, 68px);
+	--text-h2: clamp(24px, 3.2vw, 40px);
+	--text-h3: 20px;
+	--text-body: 16px;
+	--text-small: 14px;
+	--text-micro: 11px;
+
+	/* 余白 */
+	--sp-1: 4px;
+	--sp-2: 8px;
+	--sp-3: 12px;
+	--sp-4: 16px;
+	--sp-5: 24px;
+	--sp-6: 32px;
+	--sp-7: 48px;
+	--sp-8: 72px;
+	--sp-9: 112px;
+	--sp-10: 160px;
+
+	--radius-sm: 8px;
+	--radius: 14px;
+	--radius-lg: 22px;
+	--radius-pill: 999px;
+
+	--width-page: 1280px;
+	--width-prose: 680px;
+	--gutter: 28px;
+
+	--ease: cubic-bezier(0.22, 1, 0.36, 1);
+	--ease-key: cubic-bezier(0.22, 1, 0.36, 1);
+	--dur-fast: 160ms;
+	--dur-move: 320ms;
+	--dur-press: 120ms;
+	--dur-slow: 680ms;
+
+	--shadow-1: 0 1px 2px rgba(0, 0, 0, 0.5), 0 12px 32px rgba(0, 0, 0, 0.35);
+	--shadow-2: 0 2px 6px rgba(0, 0, 0, 0.55), 0 32px 72px rgba(0, 0, 0, 0.5);
+	--glow: 0 0 0 1px var(--line-strong), 0 24px 64px rgba(0, 0, 0, 0.55);
+
+	/* 旧トークンの別名。既存ページを壊さないために残している。 */
+	--canvas: var(--bg);
+	--canvas-deep: var(--bg-soft);
+	--surface-soft: var(--surface-2);
+	--raised: var(--surface-2);
+	--ink: var(--text);
+	--ink-soft: var(--text-dim);
+	--brass: var(--accent);
+	--brass-bright: var(--accent-hi);
+	--brass-soft: var(--accent-soft);
+	--felt: var(--accent);
+	--felt-soft: var(--accent-soft);
+	--key-white: #ecebe7;
+	--key-white-edge: #1a1a20;
+	--key-black: #0a0a0c;
+	--font-serif: var(--font-display);
+}
+
+@media (max-width: 900px) {
+	:root {
+		--gutter: 20px;
+	}
+}

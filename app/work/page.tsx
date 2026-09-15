@@ -1,48 +1,57 @@
-import Link from "next/link";
-import { ProjectCard } from "@/components/ProjectCard";
-import { getProjects } from "@/lib/projects";
-import { KINDS, type Kind } from "@/lib/types";
+import type { Metadata } from "next"
+import Link from "next/link"
+import { ProjectCard } from "@/components/ProjectCard"
+import { getProjects } from "@/lib/projects"
+import { KINDS, KIND_LABELS, type Kind } from "@/lib/types"
 
-function isKind(value: string | undefined): value is Kind {
-  return Boolean(value && (KINDS as readonly string[]).includes(value));
+const ALL = "all"
+const PRIORITY_COUNT = 2
+const FILTERS = [ALL, ...KINDS] as const
+
+type Filter = (typeof FILTERS)[number]
+
+export const metadata: Metadata = { title: "作品", description: "ゲーム、ツール、音楽、実験の一覧。" }
+
+function asFilter(value: string | undefined): Filter {
+	return FILTERS.includes(value as Filter) ? (value as Filter) : ALL
 }
 
-export default async function WorkPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ kind?: string }>;
-}) {
-  const { kind } = await searchParams;
-  const selected = isKind(kind) ? kind : undefined;
-  const projects = getProjects().filter((project) =>
-    selected ? project.kind === selected : true,
-  );
+function labelOf(filter: Filter): string {
+	return filter === ALL ? "すべて" : KIND_LABELS[filter as Kind]
+}
 
-  return (
-    <>
-      <h1>Work</h1>
-      <p className="tagline" style={{ marginBottom: 24 }}>
-        公開できる個人作品だけ。
-      </p>
-      <div className="filters">
-        <Link className={`chip mono ${selected ? "" : "on"}`.trim()} href="/work">
-          All
-        </Link>
-        {KINDS.map((item) => (
-          <Link
-            key={item}
-            className={`chip mono ${selected === item ? "on" : ""}`.trim()}
-            href={`/work?kind=${item}`}
-          >
-            {item}
-          </Link>
-        ))}
-      </div>
-      <div className="work-grid">
-        {projects.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
-        ))}
-      </div>
-    </>
-  );
+function hrefFor(filter: Filter): string {
+	return filter === ALL ? "/work" : `/work?kind=${filter}`
+}
+
+export default async function WorkPage({ searchParams }: { searchParams: Promise<{ kind?: string }> }) {
+	const { kind } = await searchParams
+	const filter = asFilter(kind)
+	const projects = getProjects().filter((project) => filter === ALL || project.kind === filter)
+
+	return (
+		<>
+			<section className="page-head">
+				<p className="mono">work</p>
+				<h1>Work</h1>
+				<p>遊べるもの、使えるもの、試したものを並べています。</p>
+			</section>
+			<div className="filters">
+				{FILTERS.map((item) => (
+					<Link className="tag" key={item} href={hrefFor(item)} aria-current={item === filter ? "page" : undefined}>
+						{labelOf(item)}
+					</Link>
+				))}
+			</div>
+			{projects.length === 0 ? (
+				<p className="empty">この種類の作品はまだありません。</p>
+			) : (
+				<div className="grid-cards">
+					{projects.map((project, index) => (
+						<ProjectCard key={project.slug} project={project} priority={index < PRIORITY_COUNT} />
+					))}
+				</div>
+			)}
+		</>
+	)
 }

@@ -1,0 +1,69 @@
+/*
+ * 1 カラムのグリッドは必ず minmax(0, 1fr) にする。
+ * 既定の auto トラックは中の最小幅で膨らむため、
+ * 長い英字や画像が入ると狭い画面で横にはみ出す。
+ */
+.page, .shell, .stack, .section, .hero, .page-head, .feed, .rows, .worklist,
+.clip, .clip-info, .card, .card-body, .panel, .prose, .gear-group,
+.feature-side, .band, .now, .field { grid-template-columns: minmax(0, 1fr); }
+
+/* 中身は 1 本のコンテナに入れる。ヒーローや映像だけ画面幅いっぱいに抜く。 */
+.page, .shell { position: relative; z-index: 1; display: grid; gap: var(--sp-9); width: 100%; max-width: var(--width-page); margin: 0 auto; padding: var(--sp-8) var(--gutter) var(--sp-9); }
+.bleed { margin-inline: calc(var(--gutter) * -1); }
+
+/* ヘッダ: 薄く固定して、スクロールしても作品の邪魔をしない。 */
+.topbar { position: sticky; top: 0; z-index: 60; backdrop-filter: blur(16px) saturate(140%); background: rgba(8, 8, 10, 0.72); border-bottom: 1px solid var(--line); }
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); width: 100%; max-width: var(--width-page); margin: 0 auto; padding: var(--sp-4) var(--gutter); }
+.brand { display: inline-flex; align-items: center; gap: var(--sp-3); }
+/* ロゴマークは白い角丸に赤いりんご。ホバーで赤地に反転する。 */
+.brand-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 10px; background: var(--text); color: var(--accent); transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-move) var(--ease); }
+.brand:hover .brand-mark { background: var(--accent); color: var(--text); transform: rotate(-8deg); }
+.brand-name { font-family: var(--font-display); font-size: 17px; font-weight: 600; letter-spacing: -0.03em; color: var(--text); }
+.brand-sub { font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-faint); }
+.nav-links { display: flex; align-items: center; gap: var(--sp-2); }
+.nav-link { position: relative; padding: 7px var(--sp-3); border-radius: var(--radius-pill); font-size: var(--text-small); color: var(--text-dim); transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
+.nav-link:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+.nav-link[aria-current] { color: var(--text); background: rgba(255, 255, 255, 0.09); }
+.nav-end { display: flex; align-items: center; gap: var(--sp-2); }
+
+/* 下層ページの見出し */
+.page-head { display: grid; gap: var(--sp-4); max-width: 900px; }
+.page-head h1 { font-size: var(--text-h1); }
+.page-head > p:not(.mono) { max-width: var(--width-prose); font-size: 17px; color: var(--text-dim); }
+
+.section { display: grid; gap: var(--sp-5); }
+.section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--sp-3); padding-bottom: var(--sp-4); border-bottom: 1px solid var(--line); }
+.section-head h2 { font-size: clamp(22px, 2.6vw, 30px); }
+.section-head a { font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); }
+.section-head a:hover { color: var(--accent); }
+
+.stack { display: grid; gap: var(--sp-6); align-content: start; }
+.inline { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.grid-split { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: var(--sp-6); align-items: start; }
+.grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--sp-5); }
+
+.foot-wrap { position: relative; z-index: 1; width: 100%; max-width: var(--width-page); margin: 0 auto; padding: 0 var(--gutter) var(--sp-7); }
+.foot { display: grid; gap: var(--sp-4); padding-top: var(--sp-6); border-top: 1px solid var(--line); }
+.foot-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4); }
+.foot-links { display: flex; flex-wrap: wrap; gap: var(--sp-5); }
+.foot-links a { font-size: var(--text-small); color: var(--text-dim); }
+.foot-links a:hover { color: var(--text); }
+.foot-note { display: inline-flex; align-items: center; gap: var(--sp-2); }
+.foot-apple { display: inline-flex; color: var(--accent); }
+
+@media (max-width: 900px) {
+	.grid-split { grid-template-columns: 1fr; }
+	.page, .shell { gap: var(--sp-8); padding-top: var(--sp-6); }
+	.nav-links { gap: 2px; }
+	.nav-link { padding: 6px 10px; }
+	.brand-sub { display: none; }
+}
+
+@media (max-width: 700px) {
+	.topbar-inner { flex-wrap: wrap; gap: var(--sp-3); padding-block: var(--sp-3); }
+	.nav-links { order: 3; width: 100%; overflow-x: auto; padding-bottom: 2px; }
+
+	/* 狭い画面では音の切り替えを隠して、連絡ボタンを優先する。 */
+	.nav-end .btn-quiet { display: none; }
+	.nav-end .btn { min-height: 36px; padding: 0 var(--sp-4); }
+}
